@@ -1,0 +1,6 @@
+*.ipynb
+/.ipynb_checkpoints
+/.virtual_documents
+/kifu
+to be replaced
+logtest.py
