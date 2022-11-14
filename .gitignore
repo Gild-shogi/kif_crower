@@ -5,3 +5,4 @@
 to be replaced
 logtest.py
 .env
+*.ps1
