@@ -6,3 +6,6 @@ to be replaced
 logtest.py
 .env
 *.ps1
+/use_kif
+*.kif
+/engine
