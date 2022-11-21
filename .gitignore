@@ -1,4 +1,3 @@
-*.ipynb
 /.ipynb_checkpoints
 /.virtual_documents
 /kifu
@@ -9,3 +8,8 @@ logtest.py
 /use_kif
 *.kif
 /engine
+/kif_sjis
+/archive_notebook
+/analyze_kif
+/__pycache__
+kif_data.json
