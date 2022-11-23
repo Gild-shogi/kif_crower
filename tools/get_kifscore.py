@@ -31,7 +31,7 @@ def cut_info():
                 sentences = f.readlines()
             sentences = sentences[:5] + sentences[7:]
             with open(path, mode="w", encoding="shift-jis") as f:
-                f.writelines(sentences)
+                f.writelines(sentences) 
 
 if __name__ == '__main__':
     path = "kif_sjis\eiou\eiou202106160101.kif"
