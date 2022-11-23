@@ -13,3 +13,5 @@ logtest.py
 /analyze_kif
 /__pycache__
 kif_data.json
+/rating_data
+*/__pycache__

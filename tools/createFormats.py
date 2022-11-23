@@ -13,7 +13,7 @@ import shogi.KIF
 import json
 
 class Formats:
-    """Make Sfen and Time Kif
+    """Formats
     ファイル情報を整理して別のファイルにコンバートするためのモジュール
 
     """
