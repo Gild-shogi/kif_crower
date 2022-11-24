@@ -122,7 +122,7 @@ class Vecter:
     
     def combineVec(self):
         vec1, vec2 = self.vec1, self.vec2
-        arr = np.array([self.score, self.time])
+        arr = np.array([self.score, self.time[0], self.time[1]])
         vec2 = np.append(vec2, arr)
         return np.vstack([vec1, np.append(vec2, np.zeros(vec1.shape[1]-vec2.shape[0]))])
 

@@ -15,3 +15,5 @@ logtest.py
 kif_data.json
 /rating_data
 */__pycache__
+*/datasets
+/datasets

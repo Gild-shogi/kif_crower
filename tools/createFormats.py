@@ -126,12 +126,21 @@ class Formats:
         time: list -> float
             標準化した残り時間
         """
+        tmp = []
         time = []
         for i in self.keep_time(mode='u'):
             j = float(i) - float(self.today())
             k = float(self.time(mode='u')) - self.today()
-            time.append(j/k)
-        return time[:-1]
+            tmp.append(j/k)
+        time.append([tmp[0], 1])
+        tmp = tmp[:-1]
+        for i in range(1, len(tmp)):
+            if i%2 == 1:
+                time.append([tmp[i-1], tmp[i]])
+            else:
+                time.append([tmp[i], tmp[i-1]])
+
+        return time
         
     def player(self, mode="name"):      
         """
