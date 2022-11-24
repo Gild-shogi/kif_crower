@@ -9,6 +9,28 @@ nari_dic = {"R":9, "B":10, "r": -9, "b":-10,
             "S":4, "N":4, "L":4, "P":4,
             "s":-4, "n":-4, "l":-4, "p":-4}
 class Vecter:
+    """学習データをベクトル化する
+    
+    機械学習に適したデータにするために、必要なデータをまとめて、
+    numpy配列として返す
+    特に理由はないが、(しいて言うならデータのサイズを小さくするため)
+    sfenから抽出できるデータ以外は一つの配列にまとめている
+
+    Parameter
+    ---------
+    sfen:str
+        局面と持ち駒、手番、手数のUSIプロトコルに基づく型式
+    date:list(int)
+        対局日、リストには[年, 月, 日]の順番で格納される
+    blacknum:int
+        先手の棋士番号
+    whitenum: int
+        後手の棋士番号
+    score:
+        局面の評価値
+    time:
+        その手番の人物の残り時間
+    """
     def __init__(self, sfen, date, blacknum, whitenum, score, time):
         self.vec1 = self.returnVec(sfen)
         self.vec2 = self.allcondition(date, blacknum, whitenum)
@@ -16,6 +38,19 @@ class Vecter:
         self.time = time
         self.vec = self.combineVec()
     def returnVec(self, sfen):
+        """sfenデータのベクトル化
+        Parameters
+        ----------
+        sfen:str
+            USIプロトコルの局面データ
+
+        Returns
+        -------
+        vec: np.ndarray
+            横13(最長の配列の長さ)、
+            縦12(局面：9，手番：1，持ち駒1，手数：1)        
+            のnumpy配列を返す
+        """
         block = sfen.split(" ")
         kyokumen, bw, mochi, num = block[0], block[1], block[2], block[3]
         
@@ -57,6 +92,20 @@ class Vecter:
         return pd.DataFrame(vec1+[vec2]+[vec3]+[vec4]).fillna(0).to_numpy()
     
     def condition(self, date, number):
+        """状態を正規化して返す
+        入力された棋士のレーティング推移のデータを呼び出し、
+        その棋士の対局年の最大レートと最小レートを使用して、
+        その日の棋士の調子を正規化して表現する。
+
+        Parameter
+        ---------
+        date: list(int) -> 日付
+        number:int -> 棋士番号
+
+        Returns
+        -------
+        condition: float32
+        """
         date = [int(n) for n in date]
         data = pd.read_csv("./rating_data/"+str(number)+".csv")
         oneyear = data.query("年=="+str(date[0]))

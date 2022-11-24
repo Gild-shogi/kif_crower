@@ -73,7 +73,7 @@ class Formats:
         Returns
         -------
         time: float
-            Unixタイムを実習型にしたもの
+            Unixタイムをfloat型にしたもの
         """
         init = datetime.time(0, 0, 0)
         return float(datetime.datetime.combine(datetime.date.today(), init).timestamp())

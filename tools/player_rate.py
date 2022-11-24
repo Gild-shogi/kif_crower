@@ -23,8 +23,8 @@ if __name__ =='__main__':
         number.append(kishi.number(i))
     number = list(set(number))
     number.sort()
-    idx = number.index(255)
-    number = number[idx+1:]
+    idx = number.index(302)
+    number = number[idx:]
 
 
     # CSVHeaderの設定
@@ -37,26 +37,42 @@ if __name__ =='__main__':
         data = []
         data.append(header)
         logger.info(f"=================棋士番号：{number[i]}=====================")
-        for j in range(2013, 2023):
+        for j in range(2014, 2023):
             # 存在しないページの時はHTTPErrorが起こるので無視して次のページへ行く
             try:
                 url = "http://kishibetsu.com/"+str(j)+"R/1"+str(number[i])+".html"
                 logger.debug(url)
                 table = pd.read_html(url)[0]
-                try:
-                    date_list = table[table.columns[0][0], table.columns[0][1]]["日付"].to_numpy().tolist()
-                    rate_list = table[table.columns[0][0], table.columns[0][1]]["レート"]["対戦前"].to_numpy().tolist()
-                    for z in range(len(rate_list)):
-                        date_tmp = date_list[z][0]
-                        rate_tmp = rate_list[z]
-                        if type(date_tmp) == str and type(rate_tmp) == int:
-                            year, mounth, day = j, date_tmp.split('月')[0], (date_tmp.split('月')[1]).replace("日", "")
-                            data.append([year, mounth, day, rate_tmp])
-                        else:
-                            pass
-                    time.sleep(100) #負荷軽減
-                except KeyError:
-                    logger.debug(f"{j}年の対局記録はありません")
+
+                date_list = table[table.columns[0][0], table.columns[0][1]]["日付"].to_numpy().tolist()
+                rate_list = table[table.columns[0][0], table.columns[0][1]]["レート"]["対戦前"].to_numpy().tolist()
+                for z in range(len(rate_list)):
+                    date_tmp = date_list[z][0]
+                    rate_tmp = rate_list[z]
+                    if type(date_tmp) == str and type(rate_tmp) == int:
+                        year, mounth, day = j, date_tmp.split('月')[0], (date_tmp.split('月')[1]).replace("日", "")
+                        data.append([year, mounth, day, rate_tmp])
+                    else:
+                        pass
+                time.sleep(100) #負荷軽減
+            except UnicodeDecodeError:
+                url = "http://kishibetsu.com/"+str(j)+"R/1"+str(number[i])+".html"
+                #logger.debug(url)
+                table = pd.read_html(url, encoding="cp932")[0]
+
+                date_list = table[table.columns[0][0], table.columns[0][1]]["日付"].to_numpy().tolist()
+                rate_list = table[table.columns[0][0], table.columns[0][1]]["レート"]["対戦前"].to_numpy().tolist()
+                for z in range(len(rate_list)):
+                    date_tmp = date_list[z][0]
+                    rate_tmp = rate_list[z]
+                    if type(date_tmp) == str and type(rate_tmp) == int:
+                        year, mounth, day = j, date_tmp.split('月')[0], (date_tmp.split('月')[1]).replace("日", "")
+                        data.append([year, mounth, day, rate_tmp])
+                    else:
+                        pass
+                time.sleep(100) #負荷軽減
+            except KeyError:
+                logger.debug(f"{j}年の対局記録はありません")
             except HTTPError:
                 logger.debug(f"{j}年のレーティングデータなし")
                 time.sleep(60)  #負荷軽減
