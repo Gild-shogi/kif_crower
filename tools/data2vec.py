@@ -121,6 +121,12 @@ class Vecter:
         return np.append(bcondition, wcondition)
     
     def combineVec(self):
+        """
+        1~9行目：棋譜
+        10~11行目:持ち駒
+        12行目：手数
+        13行目：先手の状態、後手の状態、評価値、先手の残り時間、後手の残り時間
+        """
         vec1, vec2 = self.vec1, self.vec2
         arr = np.array([self.score, self.time[0], self.time[1]])
         vec2 = np.append(vec2, arr)
