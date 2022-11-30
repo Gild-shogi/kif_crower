@@ -123,20 +123,36 @@ class Vecter:
     def combineVec(self):
         """
         1~9行目：棋譜
-        10~11行目:持ち駒
+        10行目：手番(0:先手, 1:後手)
+        11行目：持ち駒
         12行目：手数
-        13行目：先手の状態、後手の状態、評価値、先手の残り時間、後手の残り時間
+        13行目：先手の状態、後手の状態
+        14行目：評価値
+        15行目：残り時間
+        vec1: sfenからの情報
+        vec2: 棋士の調子
         """
+
         vec1, vec2 = self.vec1, self.vec2
-        arr = np.array([self.score, self.time[0], self.time[1]])
-        vec2 = np.append(vec2, arr)
-        return np.vstack([vec1, np.append(vec2, np.zeros(vec1.shape[1]-vec2.shape[0]))])
+        #if self.score == None or self.score == 0:
+         #   logger.error("評価値がありません")
+          #  exit(1)
+        self.score = np.array([self.score], dtype=np.float64)
+        self.time = np.array(self.time, dtype=np.float64)
+        #vec2 = np.append(vec2, arr)
+        combVec = vec1
+        combVec = np.vstack([combVec, np.append(self.vec2, np.zeros(combVec.shape[1] - self.vec2.shape[0]))])
+        combVec = np.vstack([combVec, np.append(self.score, np.zeros(combVec.shape[1] - self.score.shape[0]))])
+        combVec = np.vstack([combVec, np.append(self.time, np.zeros(combVec.shape[1] - self.time.shape[0]))])
+        return combVec
 
 if __name__ == '__main__':
     sfen = "lnsg2sn+B/4k1g2/p1pppp2p/6R2/9/2P3P2/PG1PPP1SP/4K4/1+b3G1NL w RL4Psnlp 34"
     date = ["2018", "05", "17"]
-    time = 0.5125
+    time = [0.5125, 0.452]
     score = 0.026
-    print(Vecter(sfen, date, 175, 231, score, time).vec.shape)
-    for i in Vecter(sfen, date, 175, 231, score, time).vec:
-        print(i)
+    vec = Vecter(sfen, date, 175, 231, score, time).vec
+    print(vec.shape)
+    print(vec)
+    #for i in Vecter(sfen, date, 175, 231, score, time).vec:
+     #   print(i)
