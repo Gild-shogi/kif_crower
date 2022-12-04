@@ -19,3 +19,4 @@ kif_data.json
 /datasets
 /datasets_less
 /datasets_norm
+/tools/evaltest_nnue.py
