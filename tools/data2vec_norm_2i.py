@@ -40,11 +40,19 @@ class Vecter:
         その手番の人物の残り時間
     """
     def __init__(self, sfen, date, blacknum, whitenum, score, time):
-        self.vec1 = self.returnVec(sfen)
-        self.vec2 = self.allcondition(date, blacknum, whitenum)
+        # setup
         self.score = score
         self.time = time
-        self.vec = self.combineVec()
+        self.vec1 = self.returnVec(sfen)
+        self.vec2 = self.allcondition(date, blacknum, whitenum)
+        
+        """ReturnParam
+        VecSI: SfenInfo(局面[9, 9], 手番[1, 1], 持ち駒[1, 14], 手数[1, 1])
+        VecNSI: NotSfenInfo()
+        """
+        self.vecSI, self.vecNSI = self.combineVec()
+
+
     def returnVec(self, sfen):
         """sfenデータのベクトル化
         Parameters
@@ -143,16 +151,16 @@ class Vecter:
         """
 
         vec1, vec2 = self.vec1, self.vec2
-        print(vec1)
+        #print(vec1)
         #if self.score == None or self.score == 0:
          #   logger.error("評価値がありません")
           #  exit(1)
-        self.score = np.array(self.score, dtype=np.float64)
-        self.time = np.array(self.time, dtype=np.float64)
-        vec3 = np.append(vec2 ,self.score)
-        vec3 = np.append(vec3, self.time)
+        score = np.array(self.score, dtype=np.float64)
+        time = np.array(self.time, dtype=np.float64)
+        vec3 = np.append(vec2 ,score)
+        vec3 = np.append(vec3, time)
         vec3 = pd.DataFrame(vec3).fillna(0).to_numpy()
-        print(vec3)
+        #print(vec3)
         #vec2 = np.append(vec2, arr)
         #combVec = vec1
         #combVec = np.vstack([combVec, np.append(self.vec2, np.zeros(combVec.shape[1] - self.vec2.shape[0]))])
@@ -165,8 +173,8 @@ if __name__ == '__main__':
     date = ["2018", "05", "17"]
     time = [0.5125, 0.452]
     score = 0.026
-    vec = Vecter(sfen, date, 175, 231, score, time).vec1
-    print(vec.shape)
-    print(vec)
+    vec = Vecter(sfen, date, 175, 231, score, time)
+    print(vec.vecSI[11])
+    #print(vec.vecNSI)
     #for i in Vecter(sfen, date, 175, 231, score, time).vec:
      #   print(i)
