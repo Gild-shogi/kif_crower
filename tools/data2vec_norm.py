@@ -148,6 +148,8 @@ class Vecter:
           #  exit(1)
         self.score = np.array([self.score], dtype=np.float64)
         self.time = np.array(self.time, dtype=np.float64)
+        vec3 = self.vec2 + self.score + self.time
+        vec3 = pa.DataFrame(vec3).fillna(0).to_numpy()
         #vec2 = np.append(vec2, arr)
         combVec = vec1
         combVec = np.vstack([combVec, np.append(self.vec2, np.zeros(combVec.shape[1] - self.vec2.shape[0]))])
